@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+
+  "name": "UA Post β",
+  "description": "Помощь в обработке данных для посылок",
+  "version": "1.0",
+
+  "browser_action": {
+    "default_icon": "icon.png",
+     "default_title": "UA Post",
+    "default_popup": "popup.html"
+  },
+   "icons": {
+           "48": "icon48.png",
+          "128": "icon128.png" }, 
+    
+  "permissions": [
+    "activeTab",
+     "storage",
+     "tabs",
+    "storage", 
+    "file://*/*",
+    "<all_urls>"
+  ]   
+}
