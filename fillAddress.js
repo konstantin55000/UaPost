@@ -3,6 +3,11 @@
 
 //})();
 
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};
+
 var countryList = [ 
   {name: 'Afghanistan', code: 'AF'}, 
   {name: 'Åland Islands', code: 'AX'}, 
@@ -268,12 +273,26 @@ function addEventTouched(elem){
          console.log('**', submitBtn.click()); 
       }, 4000);
 }
-  
+ function cleanString(str) {
+      console.log("input  str:::", str);
+     //str = str.replace(String.fromCharCode(str.charCodeAt("�")), " ");
+     var i = 0;
+     while (str.indexOf("�") != -1){
+         str = str.replace("�", " "); 
+         i++;
+         if (i>40)
+             break;
+     } 
+     str = str.trim();
+     console.log("out str", str);
+     return str;
+ }
 //get array   and dom element
 function insertValue(currentRow, containerText) {
     if (typeof currentRow == 'undefined'){
    console.log ("currentRow[0] is not set:", currentRow); return;
 }else {
+     console.log("hmm: curent row", currentRow," ==)", containerText);
      if (currentRow.length > 1) { 
                var str = ""; 
                for (i = 0; i < currentRow.length; i++){ 
@@ -282,12 +301,15 @@ function insertValue(currentRow, containerText) {
                        str  = str + " " + currentRow[i];
                      
                }
+               str =  cleanString(str); 
                containerText.value = str;
            } 
     else if  (currentRow.length  == 1) { 
-                currentRow[0] = currentRow[0].replace(";;", "");
-                currentRow[0] = currentRow[0].replace(",,", "");
-              containerText.value = currentRow[0]; 
+                var str2 = (currentRow[0]).trim(); 
+                str2 = str2.replace(";;", "");
+                str2 = str2.replace(",,", ""); 
+                str2 =  cleanString(str2);
+              containerText.value = str2;
     }
     else {
             containerText.value = spaces;   
@@ -340,8 +362,9 @@ if (typeof currentAddress[4] !== "undefined"){
     if (phone.indexOf("Phone :") != -1){
        phone = phone.replace("Phone :", "");
        currentAddress[4][0] = phone; 
-       console.log('phone', phone);
+       //console.log('phone', phone);
     } 
+    phone = cleanString(phone);
     phoneText.value = phone; 
     addEventTouched(phoneText);
 }
@@ -382,9 +405,9 @@ addEventTouched(snameText);
 //check.
   
 if (typeof currentAddress[3] !== "undefined"){
-    country = currentAddress[3][0]; 
+    country = currentAddress[3][0];  
+    country = cleanString(country);
     country = country.toLowerCase();
-    console.log('country', country);
 };
 country = country.trim(); 
 var countryCode = "";
