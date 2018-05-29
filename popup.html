@@ -5,45 +5,50 @@
  value "popup.html".
  -->
 <html>
-  <head>
+
+<head>
     <title>UA Post</title>
     <meta charset="utf-8" />
     <style type="text/css">
-      body {
-        margin: 20px;
-        white-space: nowrap;
-      }
-
-      h1 {
-        font-size: 15px;
-      }
-
-      #container {
-        align-items: center;
-        display: flex;
-        justify-content: space-between;
-      }
+        body {
+            margin: 20px;
+            white-space: nowrap;
+        }
+        
+        h1 {
+            font-size: 15px;
+        }
+        
+        #container {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+        }
+        
         input[type="button"] {
-        display: inline-block;
-            margin:  0 5px;
+            display: inline-block;
+            margin: 0 5px;
             padding: 6px 12px;
             border-radius: 3px;
             border: 1px solid transparent;
-        } 
+        }
+        
         #copyAddress {
             background: #99CC00;
             color: #fff;
         }
-    </style>
- 
-    <script src="popup.js"></script>
-  </head>
 
-  <body>
+    </style>
+
+    <script src="popup.js"></script>
+</head>
+
+<body>
     <h1>UA Post β</h1>
     <div id="container">
-        <input type="button" id="button" value="Загрузить CSV" />
-        <input type="button" id="copyAddress" value="Скопировать Адрес" />
+        <input type="button" id="button" value="CSV" />
+        <input type="button" id="copyAddress" value="Зробить дiло." />
     </div>
-  </body>
+</body>
+
 </html>
