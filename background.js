@@ -1,16 +1,19 @@
- var count = 8;
- rowIdx = 0;
- arrAddr = [];
+ let count = 1; //init values
+ let rowIdx = 0;
+ let arrAddr = [];
+ 
  //send to content script 
- //debugger; 
-
+ //debugger;  
  //Listen chrome runtime messages
+ 
  if (chrome.runtime) {
      chrome.runtime.onMessage.addListener(
          function (request, sender, sendResponse) {
 
              try {
+ 
                  //close current tab if needed
+ 
                  if (request.closeThis) {
                      chrome.tabs.remove(sender.tab.id);
                  }
@@ -20,10 +23,13 @@
                  }
 
                  if (rowIdx < count) {
+                     //debugger;
                      //start processing
                      if (request.startProcessing == true || request.rowProcessed == true) {
                          //start all work here  
-                         var currAddr = arrAddr[rowIdx]; 
+ 
+                         let currAddr = arrAddr[rowIdx]; 
+ 
                          //debugger;
 
                          if (currAddr.length > 0) {
@@ -59,9 +65,8 @@
                              rowIdx++;
                          }
 
-                     } //end request.startProcessing
-
-                 }else {
+                     } //end request.startProcessing 
+                 } else {
                       //create tab with lk-international page
                       chrome.tabs.create({
                           url: "https://ukrposhta.ua/lk-international/"
@@ -75,7 +80,7 @@
                  console.log('====================================');
                  return true;
              }
-             return true;
-             //process next address
+             return true; 
+             //process next address 
          });
  }

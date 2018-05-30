@@ -44,7 +44,8 @@ let country = '..';
 //country 4 //phone 5
 //Set phone number
 let phone = "..";
-
+ 
+//emulate user touch on field (make field ng-dirty )
 function addEventTouched(elem) {
     elem.dispatchEvent(new Event('change', {
         'bubbles': true
@@ -57,6 +58,7 @@ function addEventTouched(elem) {
 
 function submitShipment() {
     setTimeout(function () {
+ 
         let submitBtn = document.getElementById('submit-button');
         if (typeof (submitBtn) == 'undefined') {
             return false;
@@ -64,8 +66,7 @@ function submitShipment() {
         chrome.runtime.sendMessage({
             rowProcessed: true,
             currentRow: window.request.currentRow,
-        }, function (response) {
-           
+        }, function (response) { 
         });
         // addEventTouched(submitBtn);
         submitBtn.click(); 
@@ -85,8 +86,7 @@ function submitShipment() {
 }
 
 function cleanString(str) {
-    // console.log("input  str:::", str);
-    //str = str.replace(String.fromCharCode(str.charCodeAt("�")), " ");
+   
     let i = 0;
     while (str.indexOf("�") != -1) {
         str = str.replace("�", " ");
@@ -99,7 +99,7 @@ function cleanString(str) {
     return str;
 }
 
-//get array  and dom element
+//insert value at each dom element
 function insertValue(currentRow, containerText) {
     if (typeof currentRow == 'undefined') {
         console.log("currentRow[0] is not set:", currentRow);
@@ -130,6 +130,7 @@ function insertValue(currentRow, containerText) {
 
 function displayLog() {
     let div = document.createElement('div');
+ 
     div.style.position = 'fixed';
     div.style.top = 0;
     div.style.right = 0;
@@ -137,6 +138,7 @@ function displayLog() {
     div.style.minHeight = "80px";
     div.style.padding = '15px';
     div.style.border = "1px  solid yellowgreen";
+ 
     div.textContent = JSON.stringify(currentAddress) + ' current Address = ' + rowIdx;
     //debugger;
     console.log(div.textContent);
@@ -146,7 +148,7 @@ function displayLog() {
 function main() {
 
     displayLog();
-
+ 
     if (typeof currentAddress[4] !== "undefined") {
         phone = currentAddress[4][0];
         phone = phone.trim();
@@ -158,7 +160,7 @@ function main() {
         }
         phone = cleanString(phone);
         phoneText.value = phone;
-        addEventTouched(phoneText);
+        addEventTouched(phoneText); 
     }
    
     //!not needed for now, may need in the future
@@ -265,17 +267,21 @@ function main() {
             cost.value = staticData.cost;
             addEventTouched(cost);
             let categoryType = document.getElementById('categoryType');
+ 
+   
             categoryType.options[1].selected = true;
             addEventTouched(categoryType);
 
             //categoryType.dispatchEvent(new Event('change', { 'bubbles': true }));
             submitShipment();
+ 
             
                 
             } catch (e) {
                 alert('Ошибка при обработке адреса #' + rowIdx + JSON.stringify(currentAddress)); 
                 console.log(e.name, e.message); 
             }
+ 
         }, 100);
 
 
@@ -287,25 +293,26 @@ function main() {
 /* Main function */
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
- 
+  
         window.request = request; //set global var request
  
         currentAddress = request.currentAddress;
         rowIdx = request.currentRow;
 
         console.log('content current Addr', currentAddress);
-        //console.log('content rowIdx', rowIdx);
-
+        //console.log('content rowIdx', rowIdx); 
         setTimeout(function () {
             try {
                 main();
             } catch (e) {
+ 
                 alert('Ошибка при обработке адреса #' + rowIdx + JSON.stringify(currentAddress)); 
                 console.log(e.name, e.message);
                
             }
         }, 200);
  
+ 
         //get j; process next address
         return true;
-    });
+});

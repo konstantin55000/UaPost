@@ -1,33 +1,55 @@
-// Copyright (c) 2018 Konstantin Pryanikov. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
+// Copyright (c) 2018 Konstantin Pryanikov. All rights reserved. 
 
 // Creates an `input[type="file]`  
-var fileChooser = document.createElement('input');
+let fileChooser = document.createElement('input');
 
 // Wrap it in a form for resetting  
-var form = document.createElement('form');
-form.appendChild(fileChooser);
-
-fileChooser.type = 'file';
-fileChooser.addEventListener('change', function () {
-    var fileToRead = fileChooser.files[0];
-    console.log('sended action browseAndUpload');
-    var reader = new FileReader();
-    // Read file into memory as UTF-8
-    reader.readAsText(fileToRead);
-    // Handle errors load
-    reader.onload = loadHandler;
-    reader.onerror = errorHandler;
-});
-
-
-var arrayAddr = [];
+let form = document.createElement('form');
+ 
+let arrayAddr = [];
 arrayAddr.push(new Array());
-var processedAddr = [];
+let processedAddr = [];
 localStorage.j = 0;
  
+ 
+function loadHandler(event) {
+    let csv = event.target.result;
+
+ 
+    parsedData = csvToArray(csv);
+    
+    let n = 0;
+    for (let currRow of parsedData) {
+        if (currRow == "") {
+            arrayAddr.push(new Array());
+            n++;
+        } else {
+            arrayAddr[n].push(parsedData[i]);
+        }
+
+    }
+    //set array address in chrome storage
+    chrome.storage.sync.set({
+        'arrAddr': arrayAddr,
+        'j': 0
+    });
+
+
+    //end load handler
+}
+ 
+ 
+function getCurrentUrl() {
+
+    chrome.tabs.getSelected(null, function (tab) {
+        var tablink = tab.url;
+        console.log(tablink);
+        return tablink;
+    });
+    return '';
+}
+
+   
 function csvToArray(strData, strDelimiter) {
     // Check to see if the delimiter is defined. If not,
     // then default to comma.
@@ -112,30 +134,7 @@ function csvToArray(strData, strDelimiter) {
 }
  
 
-function loadHandler(event) {
-    var csv = event.target.result;
 
-    parsedData = csvToArray(csv);
-    
-    var n = 0;
-    for (let currRow of parsedData) {
-        if (currRow == "") {
-            arrayAddr.push(new Array());
-            n++;
-        } else {
-            arrayAddr[n].push(parsedData[i]);
-        }
-
-    }
-    //set array address in chrome storage
-    chrome.storage.sync.set({
-        'arrAddr': arrayAddr,
-        'j': 0
-    });
-
-
-    //end load handler
-}
 
 function errorHandler(evt) {
     if (evt.target.error.name == "NotReadableError") {
@@ -160,13 +159,13 @@ function processNextAddress() {
 
     chrome.storage.sync.get("j", function (holder) {
         var arrAddr = chrome.storage.sync.get("arrAddr", function (obj) {
-            var j = holder.j;
+            let j = holder.j;
              
             if (typeof obj.arrAddr[j] === undefined) {
                 return;
             }
 
-            var arrAddr = obj.arrAddr;
+            let arrAddr = obj.arrAddr;
 
             //send message to background page
             chrome.runtime.sendMessage({
@@ -190,11 +189,28 @@ function processNextAddress() {
         }); //sync get storage
     });
 } 
+ 
+ 
+//add csv file input logic
+form.appendChild(fileChooser);
+fileChooser.type = 'file';
+fileChooser.addEventListener('change', function () {
+    var fileToRead = fileChooser.files[0];
+    console.log('sended action browseAndUpload');
+    var reader = new FileReader();
+    // Read file into memory as UTF-8
+    reader.readAsText(fileToRead);
+    // Handle errors load
+    reader.onload = loadHandler;
+    reader.onerror = errorHandler;
+});
 
+  
+//add appropriate events to buttons 
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('button').addEventListener('click', function () {
-        //chrome.runtime.sendMessage({ action: 'browseAndUpload' });
-        fileChooser.click(); 
+    document.getElementById('button').addEventListener('click', function () {  
+        fileChooser.click();
+ 
     });
     document.getElementById('copyAddress').addEventListener('click', function () {
         processNextAddress(); //j++ in processNextAddress success callback
