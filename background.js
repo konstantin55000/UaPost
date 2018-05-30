@@ -23,11 +23,7 @@
                      //start processing
                      if (request.startProcessing == true || request.rowProcessed == true) {
                          //start all work here  
-                         var currAddr = arrAddr[rowIdx];
-                         //                         console.log('arr Addr', arrAddr);
-                         //                         console.log('background j = ', rowIdx);
-                         //                         console.log('background currAddr', currAddr);
-                         //                         console.log('===================================');
+                         var currAddr = arrAddr[rowIdx]; 
                          //debugger;
 
                          if (currAddr.length > 0) {
@@ -65,6 +61,11 @@
 
                      } //end request.startProcessing
 
+                 }else {
+                      //create tab with lk-international page
+                      chrome.tabs.create({
+                          url: "https://ukrposhta.ua/lk-international/"
+                      });
                  }
 
              } catch (e) {

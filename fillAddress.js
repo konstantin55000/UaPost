@@ -68,8 +68,19 @@ function submitShipment() {
            
         });
         // addEventTouched(submitBtn);
-        submitBtn.click();
-        chrome.runtime.sendMessage({closeThis: true}); 
+        submitBtn.click(); 
+        //check if any invalid filled input
+        //naturally show validation error on page, so do not close tab 
+        var invalidInputs = document.querySelectorAll('.ng-invalid');
+        if (invalidInputs && invalidInputs.length && invalidInputs.length > 0){ 
+            console.log('Незаповнені поля на сторінці. Перевірте, Будь ласка.')
+        }
+        else {
+             //processed ok, close this tab
+            chrome.runtime.sendMessage({closeThis: true});
+        }    
+         
+         
     }, 2000);
 }
 
