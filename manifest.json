@@ -2,8 +2,8 @@
     "manifest_version": 2,
  
     "name": "UA Post Mед", //es6
-    "description": "Помощь в обработке данных для посылок",
-    "version": "2.0.2",
+    "description": "Помощь в обработке данных для посылок (radio Internet)",
+    "version": "2.0.3",
  
     "browser_action": {
         "default_icon": "icon.png",

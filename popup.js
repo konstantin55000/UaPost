@@ -24,7 +24,7 @@ function loadHandler(event) {
             arrayAddr.push(new Array());
             n++;
         } else {
-            arrayAddr[n].push(parsedData[i]);
+            arrayAddr[n].push(currRow);
         }
 
     }
